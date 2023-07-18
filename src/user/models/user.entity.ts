@@ -18,10 +18,10 @@ export class UserEntity {
   @Column({ unique: true })
   nickname: string;
 
-  @Column()
+  @Column({ default: '' })
   phone: string;
 
-  @Column()
+  @Column({ default: null })
   birthday: Date;
 
   @Column()
