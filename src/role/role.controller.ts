@@ -24,7 +24,7 @@ export class RoleController {
 
   @Get()
   get(): Observable<RoleEntity[]> {
-    return from(this.roleService.get());
+    return from(this.roleService.getAll());
   }
 
   @Get('/:id')
