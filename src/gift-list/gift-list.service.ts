@@ -5,12 +5,15 @@ import { DeleteResult, Repository } from 'typeorm';
 import { CreateGiftListDto } from './dto/create-gift-list.dto';
 import { GiftListMapper } from './mapper/gift-list.mapper';
 import { GetGiftListDTO } from './dto/get-gifts-list-dto';
+import { UserEntity } from '../user/models/user.entity';
 
 @Injectable()
 export class GiftListService {
   constructor(
     @InjectRepository(GiftListEntity)
     private giftListRepository: Repository<GiftListEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private giftListMapper: GiftListMapper,
   ) {}
 
@@ -33,6 +36,16 @@ export class GiftListService {
     });
 
     return this.giftListMapper.toDTO(giftListItem);
+  }
+
+  async getByUserId(id: number): Promise<GiftListEntity[]> {
+    const targetUser = await this.userRepository.findOne({ where: { id } });
+
+    if (!targetUser) throw new NotFoundException('User not found.');
+
+    return await this.giftListRepository.find({
+      where: { user: targetUser },
+    });
   }
 
   async create(giftListDTO: CreateGiftListDto): Promise<GiftListEntity> {

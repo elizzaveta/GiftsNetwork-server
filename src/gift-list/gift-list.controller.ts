@@ -28,6 +28,12 @@ export class GiftListController {
     return from(this.giftListService.getById(id));
   }
 
+  // get by user
+  @Get('/user/:id')
+  getByUserId(@Param('id') id: number): Observable<GiftListEntity[]> {
+    return from(this.giftListService.getByUserId(id));
+  }
+
   @Post()
   create(@Body() giftListDTO: CreateGiftListDto): Observable<GiftListEntity> {
     return from(this.giftListService.create(giftListDTO));
